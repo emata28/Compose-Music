@@ -1,0 +1,25 @@
+{
+    "defaultSeverity": "warning",
+    "extends": [
+        "tslint-config-standard",
+        "tslint:recommended",
+        "tslint-config-airbnb"
+    ],
+    "jsRules": {},
+    "rules": {
+        "no-console": false,
+        "trailing-comma": [true, {
+            "singleline": "never",
+            "multiline": {
+                "objects": "ignore",
+                "arrays": "ignore",
+                "functions": "never",
+                "typeLiterals": "ignore"
+            }
+        }],
+        "no-increment-decrement": false,
+        "only-arrow-functions": false,
+        "ter-prefer-arrow-callback": [false]
+    },
+    "rulesDirectory": []
+}
