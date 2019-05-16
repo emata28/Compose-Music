@@ -38,7 +38,7 @@ export class Song {
     return this.letters[pChannel].get(pLetter);
   }
 
-  public getJson(pLetters: string[][], pCants: any[][]): number[] {
+  public Fitness(pLetters: string[][], pCants: any[][]): number[] {
     let json: number[] = [0,0];
     for (let channel = 0; channel < 2; channel++) {
       let score: number = 0;
