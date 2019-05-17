@@ -1,9 +1,6 @@
 /*import {AMOUNT_OF_SONGS, BITS, S2_MULTIPLIER} from "./consts";
 import {Song} from "./song";
 
-
-
-
 async function compose(audioData: any,sectorsS1: string[],sectorsS2: string[]) {
   const rangesS1 = [ranges(sectorsS1[0]), ranges(sectorsS1[1])];
   const rangesS2 = [ranges(sectorsS2[0]), ranges(sectorsS2[1])];
@@ -37,58 +34,63 @@ async function compose(audioData: any,sectorsS1: string[],sectorsS2: string[]) {
   return result;
 }
 
-function ranges(s: string): any[] {
-  const LetterFound: string[] = ['L', 'F', 'V', 'P', 'M', 'B', 'S'];
-  const CountFound: number[] = [0, 0, 0, 0, 0, 0, 0];
-  const RangesFound: number[][] = [];
-  const Letters: number[][] = [[], [], [], [], [], [], []];
-  let lastFound = 0;
-  for (let i = 0; i < s.length; i++) {
-    const foundIndex = LetterFound.indexOf(s[i]);
-    if (foundIndex == -1) {
-      LetterFound.push(s[i]);
-      CountFound.push(1);
-      Letters.push([i]);
-    } else {
-      CountFound[foundIndex]++;
-      Letters[foundIndex].push(i);
+
+
+*/
+
+import {AMOUNT_OF_SONGS, BITS} from "./consts";
+import {Song} from "./song";
+import {getIndex, getLetter} from "./Utilities";
+export class Compose {
+
+  public  getInitialSongs(pRangesS1: any[],pRangesS2: any[], pSizePerSong: number): Song[] {
+    const songs: Song[] = [];
+    for (let song = 0; song < AMOUNT_OF_SONGS; song++) {
+      songs.push(this.generateSong(pRangesS2,pRangesS1, pSizePerSong));
+    }
+    return songs;
+  }
+
+  public  ranges(pSong: string): any[] {
+    const LetterFound: string[] = ['L', 'F', 'V', 'P', 'M', 'B', 'S'];
+    const CountFound: number[] = [0, 0, 0, 0, 0, 0, 0];
+    const RangesFound: number[][] = [];
+    const Letters: number[][] = [[], [], [], [], [], [], []];
+    let lastFound = 0;
+    for (let i = 0; i < pSong.length; i++) {
+      const foundIndex = LetterFound.indexOf(pSong[i]);
+        CountFound[foundIndex]++;
+        Letters[foundIndex].push(i);
+
 
     }
-  }
-  for (let i = 0; i < CountFound.length; i++) {
-    CountFound[i] = (CountFound[i]) * 100 / s.length;
-    const newRange = Math.round(CountFound[i] / 100 * Math.pow(2, BITS));
-    RangesFound.push([lastFound, lastFound + 1 + newRange]);
-    lastFound += newRange;
-  }
-  const Result: any[][] = [];
-  Result.push(LetterFound);
-  Result.push(CountFound);
-  Result.push(RangesFound);
-  Result.push(Letters);
-  return Result;
-}
-
-function getInitialSongs(ranges: any[], amountOfSongs: number, sizePerSong: number): Song[] {
-  const songs: Song[] = [];
-  for (let song = 0; song < amountOfSongs; song++) {
-    songs.push(generateSong(ranges, sizePerSong));
-  }
-  return songs;
-}
-
-function generateSong(ranges: any[], size: number): Song {
-  const song: Song = new Song();
-  for (let channel = 0; channel < 2; channel++) {
-    for (let index = 0; index < size; index++) {
-      const rand = Math.round(Math.random() * Math.pow(2, BITS));
-      song.addToChannel(channel, {
-        letter: rand,
-        index: getIndex(ranges, rand, channel),
-      },                getLetter(ranges, channel, rand));
+    for (let i = 0; i < CountFound.length; i++) {
+      CountFound[i] = (CountFound[i]) * 100 / pSong.length;
+      const newRange = Math.round(CountFound[i] / 100 * Math.pow(2, BITS));
+      RangesFound.push([lastFound, lastFound + 1 + newRange]);
+      lastFound += newRange;
     }
+    const Result: any[][] = [];
+    Result.push(LetterFound);
+    Result.push(CountFound);
+    Result.push(RangesFound);
+    Result.push(Letters);
+    return Result;
   }
-  //
-  // song.sortSong();
-  return song;
-}*/
+
+  private  generateSong(pRangesS2: any[],pRangesS1: any[], pSize: number): Song {
+    const song: Song = new Song();
+    for (let channel = 0; channel < 2; channel++) {
+      for (let index = 0; index < pSize; index++) {
+        const rand = Math.round(Math.random() * Math.pow(2, BITS));
+        song.addToChannel(channel, {
+          letter: rand,
+          index: getIndex(pRangesS1, rand, channel),
+        }, getLetter(pRangesS2, channel, rand));
+      }
+    }
+    //
+    // song.sortSong();
+    return song;
+  }
+}

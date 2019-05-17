@@ -1,5 +1,6 @@
 import {BITS} from "./consts";
 import {Song} from "./song";
+import {getIndex, getLetter} from "./Utilities";
 
 function cross(letter1: number, letter2: number) {
   const str: string = new Array(BITS + 1).join('0');

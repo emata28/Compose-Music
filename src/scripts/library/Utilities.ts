@@ -1,19 +1,20 @@
 import {LATTER_RATE} from "./consts";
 import {getForm, getSector} from "./sector";
+import {Song} from "../../../build/src/scripts/library/song";
+import {BITS} from "./consts";
 
-
-function getIndex(ranges: any[], rand: number, channel: number) {
+export function getIndex(ranges: any[], rand: number, channel: number) {
   const letterI = getLetter(ranges, channel, rand);
   // ranges[channel][3][letterI][ranges[channel][2][letterI][1]-ranges[channel][2][letterI][0]/ranges[channel][3][letterI]]
   const list: any[] = ranges[channel][3][letterI];
   return list[rand % list.length];
 }
 
-function isInRange(lower: number, higher: number, letterNum: number) {
+export function isInRange(lower: number, higher: number, letterNum: number) {
   return (lower <= letterNum && letterNum <= higher);
 
 }
-function getLetter(ranges: any[], channel: number, rand: number): number {
+export function getLetter(ranges: any[], channel: number, rand: number): number {
   let found = false;
   let index = 0;
   while (!found) {
