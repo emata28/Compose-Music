@@ -2,11 +2,11 @@ import { BITS } from './consts';
 import { SongSegment } from './SongSegment';
 
 export class infoTable {
-  private Segments: SongSegment[][] = [[], [], [], [], [], [], [], [], [], []];
-  private Porcentages: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  private Ranges: number[][] = [[], [], [], [], [], [], [], [], [], []];
+  private _Segments: SongSegment[][] = [[], [], [], [], [], [], [], [], [], []];
+  private _Porcentages: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  private _Ranges: number[][] = [[], [], [], [], [], [], [], [], [], []];
 
-  private total = 0;
+  private _total = 0;
   constructor() {
 
   }
@@ -18,23 +18,47 @@ export class infoTable {
   }
   public placeSegment(pSegment: SongSegment , pPorcentage: number) {
     console.log(pPorcentage / 10);
-    this.Segments[Math.floor(pPorcentage / 10)].push(pSegment);
-    this.total++;
+    this._Segments[Math.floor(pPorcentage / 10)].push(pSegment);
+    this._total++;
   }
 
+  get Segments(): SongSegment[][] {
+    return this._Segments;
+  }
+
+  get Porcentages(): number[] {
+    return this._Porcentages;
+  }
+
+  get Ranges(): number[][] {
+    return this._Ranges;
+  }
+
+  get total(): number {
+    return this._total;
+  }
+
+  public getInfoRange(pBit:number):number{
+    for(let i=0; i<this._Ranges.length; i+=1){
+      if(this._Ranges[i][0]<pBit && this._Ranges[i][1]>pBit) {
+        return i;
+      }
+    }
+    return -1;
+  }
   private calcPorcentages() {
-    for (let i = 0; i < this.Segments.length; i++) {
-      this.Porcentages[i] = this.Segments[i].length / this.total;
+    for (let i = 0; i < this._Segments.length; i++) {
+      this._Porcentages[i] = this._Segments[i].length / this._total;
 
     }
   }
 
   private calcRanges() {
     let total: number  = 0;
-    for (let i = 0; i < this.Porcentages.length; i++) {
-      this.Ranges[i].push(total) ;
-      total += (Math.pow(2, BITS) * (this.Porcentages[i]));
-      this.Ranges[i].push(total) ;
+    for (let i = 0; i < this._Porcentages.length; i++) {
+      this._Ranges[i].push(total) ;
+      total += (Math.pow(2, BITS) * (this._Porcentages[i]));
+      this._Ranges[i].push(total) ;
 
     }
   }

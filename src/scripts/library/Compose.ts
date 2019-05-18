@@ -1,16 +1,22 @@
-import { AMOUNT_OF_SONGS, AMOUNT_SEGMETNS, BITS, SEGMENT_SIZE } from './consts';
+import { Channel } from './Channel';
+import {AMOUNT_OF_SONGS, BITS, LetterOrder, SEGMENT_SIZE} from './consts';
 import { fitness } from './Fitness';
 import { bitsCross } from './Genetic';
 import { Individual } from './Individual';
+import { infoTable } from './infoTable';
 import { SongSegment } from './SongSegment';
 
-export function getSegments(pSong: string): SongSegment[] {
+export function getSegments(pSong: Channel): SongSegment[] {
   const segments: SongSegment[] = [];
-  for (let i = 0; i < pSong.length; i += Math.round(pSong.length / AMOUNT_SEGMETNS)) {
-    const segment: SongSegment = new SongSegment(
-      pSong.substr(i, Math.round(pSong.length / AMOUNT_SEGMETNS) - 1), i,
-      i + Math.round(pSong.length / AMOUNT_SEGMETNS) - 1
-    );
+
+  for (let i = 0; i < pSong.getInfo().length; i += SEGMENT_SIZE) {
+    let segmentData: any[] = [];
+    for (const e = 0; i < SEGMENT_SIZE; i += 1) {
+      const rand = Math.random() * pSong.getAll().length;
+      segmentData.push(pSong.getAll()[rand]);
+    }
+    const segment: SongSegment = new SongSegment(segmentData);
+    segmentData = [];
     segment.analizeSegment();
     // this.bitsValue[i] = Math.round(this.CountFound[i] / 100 * Math.pow(2, BITS));
     segments.push(segment);
@@ -37,7 +43,7 @@ export function getFit(pSongSegments: Individual[][], pMissing: Individual[][]) 
 export function cross(pFitSongs: Individual[][]): Individual[][] {
   const sons: Individual[][] = [[], []];
   for (let channel = 0; channel < 2; channel += 1) {
-    for (let indi = 0; indi < AMOUNT_SEGMETNS; indi += 1) {
+    for (let indi = 0; indi < pFitSongs.length * 2; indi += 1) {
       const pos1 = Math.random() * (pFitSongs[channel].length - 1);
       const pos2 = Math.random() * (pFitSongs[channel].length - 1);
       const bitsValue = pFitSongs[channel][pos1].getBitsValues();
@@ -50,6 +56,34 @@ export function cross(pFitSongs: Individual[][]): Individual[][] {
     }
   }
   return sons;
+}
+function individualsToSegments(pSons: Individual[], pChannel: Channel) {
+  const segments: SongSegment[] = [];
+  for (const son of pSons) {
+    const bits = son.getBitsValues();
+    const aasdasda = [];
+    for (let bit = 0; bit < bits.length; bit += 1) {
+      let amount = bits[bit]/Math.pow(2,BITS) * SEGMENT_SIZE;
+      while (amount > 0) {
+        const letters = pChannel.getLetter(LetterOrder[bit]);
+        const newLetter = letters[(letters.length - 1) * Math.random()];
+        aasdasda.push(newLetter);
+        amount -= 1;
+      }
+    }
+    const segment = new SongSegment(aasdasda);
+    segments.push(segment);
+  }
+  return segments;
+}
+function checkifFound(pMissing: Individual[], pGeneration: Individual[]) {
+  for (let i = 0; i < pMissing.length; i += 1) {
+    const index = pGeneration.indexOf(pMissing[i]);
+    if (index !== -1) {
+      pMissing.splice(i, 1);
+
+    }
+  }
 }
 
 function generateMissing(pSegments: SongSegment[]) {
