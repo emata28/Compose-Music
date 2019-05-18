@@ -1,15 +1,14 @@
 import {AMOUNT_OF_SONGS, BITS, SEGMENT_SIZE} from "./consts";
 import {SongSegment} from "./SongSegment";
-export class Compose {
 
 
-  public getSegments(pSong: string): SongSegment[] {
+  export function getSegments(pSong: string): SongSegment[] {
     const segments: SongSegment[] = [];
-    for (let i = 0; i < pSong.length; i = +SEGMENT_SIZE) {
-      let segment: SongSegment = new SongSegment(pSong.substr(i, i + SEGMENT_SIZE), i, SEGMENT_SIZE - 1);
+    for (let i = 0; i < pSong.length; i  +=Math.round(pSong.length/20)) {
+      let segment: SongSegment = new SongSegment(pSong.substr(i, Math.round(pSong.length/20)-1), i, i+Math.round(pSong.length/20)-1);
       segment.analizeSegment();
       segments.push(segment);
     }
     return segments;
-  }
+
 }
