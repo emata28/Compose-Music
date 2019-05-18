@@ -1,15 +1,16 @@
+import {Channel} from './Channel';
 import {LATTER_RATE, LetterOrder} from './consts';
 import { BITS } from './consts';
 import { infoTable } from './infoTable';
 import { getSector } from './sector';
 import { SongSegment } from './SongSegment';
 
-export function analizeSong(pAudioData: any, pSectors: string[]) {
+export function analizeSong(pAudioData: any, pSectors: Channel[]) {
   for (let i = 0; i < pAudioData.channelData[0].length; i += LATTER_RATE) {
     const channel1 = getSector(pAudioData.channelData[0][i], pAudioData.channelData[0][i + LATTER_RATE]);
     const channel2 = getSector(pAudioData.channelData[1][i], pAudioData.channelData[1][i + LATTER_RATE]);
-    pSectors[0] += channel1;
-    pSectors[1] += channel2;
+    pSectors[0].addLetter(channel1);
+    pSectors[1].addLetter( channel2);
 
   }
 
