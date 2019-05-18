@@ -23,7 +23,7 @@ export function getFit(pSongSegments: SongSegment[][], pMissing: SongSegment[][]
       segment.setFitness(segFit);
     }
     pSongSegments[channel].sort((a: SongSegment, b: SongSegment) => {
-      return a.getAvgFitness() < b.getAvgFitness() ? 1 : -1;
+      return a.getAvgFitness() > b.getAvgFitness() ? 1 : -1;
     });
   }
   fit[0] = pSongSegments[0].slice(0, pSongSegments[0].length * 0.5);
