@@ -38,9 +38,10 @@ async function compose(audioData: any,sectorsS1: string[],sectorsS2: string[]) {
 
 */
 
-import {AMOUNT_OF_SONGS, BITS} from "./consts";
+import {AMOUNT_OF_SONGS, BITS, SEGMENT_SIZE} from "./consts";
 import {Song} from "./song";
 import {getIndex, getLetter} from "./Utilities";
+import {SongSegment} from "./SongSegment";
 export class Compose {
 
   public  getInitialSongs(pRangesS1: any[],pRangesS2: any[], pSizePerSong: number): Song[] {
@@ -51,6 +52,15 @@ export class Compose {
     return songs;
   }
 
+
+  public  getSegments(pSong: string): SongSegment[] {
+    const segments: SongSegment[] = [];
+    for (let i = 0; i < pSong.length; i=+SEGMENT_SIZE) {
+      let segment: SongSegment = new SongSegment(pSong.substr(i,i+SEGMENT_SIZE),i, SEGMENT_SIZE-1);
+      segments.push(segment);
+    }
+    return segments;
+  }
   public  ranges(pSong: string): any[] {
     const LetterFound: string[] = ['L', 'F', 'V', 'P', 'M', 'B', 'S'];
     const CountFound: number[] = [0, 0, 0, 0, 0, 0, 0];

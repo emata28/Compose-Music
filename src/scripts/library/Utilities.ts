@@ -35,7 +35,7 @@ export function analizeSong(pAudioData:any, pSectors: string[]) {
     pSectors[1] += channel2;
 
   }
-  pSectors[0] = getForm(pSectors[0]);
-  pSectors[1] = getForm(pSectors[1]);
+  //pSectors[0] = getForm(pSectors[0]);
+  //pSectors[1] = getForm(pSectors[1]);
 }
 
