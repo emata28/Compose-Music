@@ -4,6 +4,8 @@ export class SongSegment {
   private Segment: string;
   private letters: string [][] = [];
   private CountFound: number[] = [0, 0, 0];
+  private Porcentages: number[] = [0, 0, 0];
+
   private LetterFound: string[] = ['S', 'B', 'P'];
   private Letters: number[][] = [[], [], []];
   private Start :number;
@@ -16,13 +18,13 @@ export class SongSegment {
 
   }
 
-  private analizeSegment() {
+  public analizeSegment() {
     for (let i = 0; i < this.Segment.length; i++) {
       const foundIndex = this.LetterFound.indexOf(this.Segment[i]);
       this.CountFound[foundIndex]++;
       this.Letters[foundIndex].push(i);
       for (let i = 0; i < this.CountFound.length; i++) {
-        this.CountFound[i] = (this.CountFound[i]) * 100 / this.Segment.length;
+        this.Porcentages[i] = (this.CountFound[i]) * 100 / this.Segment.length;
         const newRange = Math.round(this.CountFound[i] / 100 * Math.pow(2, BITS));
 
       }

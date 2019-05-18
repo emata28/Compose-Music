@@ -57,6 +57,7 @@ export class Compose {
     const segments: SongSegment[] = [];
     for (let i = 0; i < pSong.length; i=+SEGMENT_SIZE) {
       let segment: SongSegment = new SongSegment(pSong.substr(i,i+SEGMENT_SIZE),i, SEGMENT_SIZE-1);
+      segment.analizeSegment();
       segments.push(segment);
     }
     return segments;
