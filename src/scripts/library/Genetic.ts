@@ -9,7 +9,3 @@ function bitsCross(pSubjectA: number, pSubjectB: number): number {
   }
   return newNumber;
 }
-
-export function cross() {
-  // Do bitsCross TODO
-}
