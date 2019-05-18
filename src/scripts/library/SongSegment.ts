@@ -1,4 +1,4 @@
-import { BITS, LetterOrder } from './consts';
+import {BITS, LetterOrder} from './consts';
 
 export class SongSegment {
   private Segment: string;
@@ -6,7 +6,6 @@ export class SongSegment {
   private CountFound: number[] = [0, 0, 0];
   private Porcentages: number[] = [0, 0, 0];
   private Fitness: number[] = [0, 0, 0];
-
   private Letters: number[][] = [[], [], []];
   private Start: number;
   private End: number;
@@ -18,16 +17,14 @@ export class SongSegment {
   }
 
   public analizeSegment() {
-    for (let i = 0; i < this.Segment.length; i++) {
+    for (let i = 0; i < this.Segment.length; i += 1) {
       const foundIndex = LetterOrder.indexOf(this.Segment[i]);
-      this.CountFound[foundIndex]++;
+      this.CountFound[foundIndex] += 1;
       this.Letters[foundIndex].push(i);
 
     }
-    for (let i = 0; i < this.CountFound.length; i++) {
+    for (let i = 0; i < this.CountFound.length; i += 1) {
       this.Porcentages[i] = (this.CountFound[i]) * 100 / this.Segment.length;
-      const newRange = Math.round(this.CountFound[i] / 100 * Math.pow(2, BITS));
-
     }
   }
 
@@ -62,4 +59,3 @@ export class SongSegment {
     this.Fitness = pFitness;
   }
 }
-

@@ -14,7 +14,6 @@ const audioDataS1 = readAudiodata(S1);
 const audioDataS2 = readAudiodata(S2);
 const missingSegmentsS2:SongSegment[][] = [[],[]];
 const Result:SongSegment[][] = [[],[]];
-const infoTableS2:infoTable[][] = [[],[]];
 const  individuals:SongSegment[][] = [[],[]];
 
 
