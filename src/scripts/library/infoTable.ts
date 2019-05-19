@@ -26,9 +26,8 @@ export class infoTable {
   public getFromPorcentage(pPorcentage: number[]){
     let slot =Math.floor(pPorcentage[0] / 10);
     for(let searching= 0;searching<this.Segments[slot].length;searching+=1) {
-      if (this.Segments[slot][searching].getPorcentages()[1] == pPorcentage[1] && this.Segments[slot][searching].getPorcentages()[1] == pPorcentage[2]) {
+      if (Math.floor(this.Segments[slot][searching].getPorcentages()[1]) === Math.floor(pPorcentage[1]) && Math.floor(this.Segments[slot][searching].getPorcentages()[2]) === Math.floor(pPorcentage[2])) {
         return this.Segments[slot][searching];
-
       }
     }
     return this.Segments[slot][0];
@@ -62,7 +61,7 @@ export class infoTable {
 
   private calcPorcentages() {
     for (let i = 0; i < this._Segments.length; i++) {
-      this._Porcentages[i] = this._Segments[i].length / this._total;
+      this._Porcentages[i] = Math.round(this._Segments[i].length / this._total);
 
     }
   }
