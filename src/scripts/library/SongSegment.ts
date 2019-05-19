@@ -43,4 +43,8 @@ export class SongSegment {
   public setFitness(pFitness: number[]) {
     this.Fitness = pFitness;
   }
+
+  public getLetters() {
+    return this.Segment;
+  }
 }

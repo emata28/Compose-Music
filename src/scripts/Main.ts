@@ -1,5 +1,5 @@
 import {Channel} from './library/Channel';
-import {compose, generateIndividuals, getGoal, getSegments} from './library/Compose';
+import {compose, createWav, generateIndividuals, getGoal, getSegments} from './library/Compose';
 import {
   AMOUNT_OF_SONGS, BIT_RATE, BITS,
   LATTER_RATE, S2_MULTIPLIER
@@ -35,5 +35,6 @@ let infoTablesIndividual: infoTable[][] = [[new infoTable(),new infoTable(),new 
 
 
 //infoTablesIndividual = (analizeSegments(firstGen,infoTablesIndividual));
-console.log(firstGen[0][0])
-compose(missingSegmentsS2, firstGen, sectorsS1,infoTablesIndividual);
+//console.log(firstGen[0][0])
+const song = compose(missingSegmentsS2, firstGen, sectorsS1,infoTablesIndividual);
+createWav(song, audioDataS1, sectorsS2.length * S2_MULTIPLIER)
