@@ -130,14 +130,13 @@ export function compose(pMissing: SongSegment[][], pGen: SongSegment[][], pChann
     }
   num++;
   } while (missingIndividuals[0].length !== 1 || missingIndividuals[1].length !== 1);
-  let tempSegment ;
- /* for (let channel = 0; channel < pMissing.length; channel += 1) {
-    for (let i = 0; i < pMissing[channel].length; i += 1) {
-      if(pMissing[channel][i]==pTable[channel][0].Segments[0][0]){
+  let Song: SongSegment[][] =[[],[]];
 
-      }
-      tempSegment=pTable[channel][]
+  let tempSegment ;
+  for (let channel = 0; channel < pMissing.length; channel += 1) {
+    for (let i = 0; i < pMissing[channel].length; i += 1) {
+      Song[channel].push( pTable[channel][0].getFromPorcentage(pMissing[channel][i].getPorcentages()));
     }
-  }*/
+  }
 
 }
