@@ -1,5 +1,5 @@
-import { BITS } from './consts';
-import { SongSegment } from './SongSegment';
+import {BITS} from './consts';
+import {SongSegment} from './SongSegment';
 
 export class infoTable {
   private _Segments: SongSegment[][] = [[], [], [], [], [], [], [], [], [], []];
@@ -7,6 +7,7 @@ export class infoTable {
   private _Ranges: number[][] = [[], [], [], [], [], [], [], [], [], []];
 
   private _total = 0;
+
   constructor() {
 
   }
@@ -16,8 +17,8 @@ export class infoTable {
     this.calcRanges();
 
   }
-  public placeSegment(pSegment: SongSegment , pPorcentage: number) {
-    console.log(pPorcentage / 10);
+
+  public placeSegment(pSegment: SongSegment, pPorcentage: number) {
     this._Segments[Math.floor(pPorcentage / 10)].push(pSegment);
     this._total++;
   }
@@ -38,14 +39,15 @@ export class infoTable {
     return this._total;
   }
 
-  public getInfoRange(pBit:number):number{
-    for(let i=0; i<this._Ranges.length; i+=1){
-      if(this._Ranges[i][0]<pBit && this._Ranges[i][1]>pBit) {
+  public getInfoRange(pBit: number): number {
+    for (let i = 0; i < this._Ranges.length; i += 1) {
+      if (this._Ranges[i][0] < pBit && this._Ranges[i][1] > pBit) {
         return i;
       }
     }
     return -1;
   }
+
   private calcPorcentages() {
     for (let i = 0; i < this._Segments.length; i++) {
       this._Porcentages[i] = this._Segments[i].length / this._total;
@@ -54,11 +56,11 @@ export class infoTable {
   }
 
   private calcRanges() {
-    let total: number  = 0;
+    let total: number = 0;
     for (let i = 0; i < this._Porcentages.length; i++) {
-      this._Ranges[i].push(total) ;
+      this._Ranges[i].push(total);
       total += (Math.pow(2, BITS) * (this._Porcentages[i]));
-      this._Ranges[i].push(total) ;
+      this._Ranges[i].push(total);
 
     }
   }

@@ -1,10 +1,11 @@
-import { DumbMap } from './dumbMap';
+import {DumbMap} from './dumbMap';
 
 export class Channel {
   private info: string;
   private letters: DumbMap;
   private index: number;
   private all: any[];
+
   constructor() {
     this.info = '';
     this.letters = new DumbMap();
@@ -15,7 +16,7 @@ export class Channel {
   public addLetter(pLetter: string) {
     this.info += pLetter;
     const prev = this.letters.get(pLetter);
-    const newLetter = { letter: pLetter, index: this.index };
+    const newLetter = {letter: pLetter, index: this.index};
     if (prev !== undefined) {
       prev.push(newLetter);
       this.letters.set(pLetter, prev);
@@ -29,9 +30,11 @@ export class Channel {
   public getLetter(pLetter: string): any[] {
     return this.letters.get(pLetter);
   }
+
   public getAll(): any[] {
     return this.all;
   }
+
   public getInfo(): string {
     return this.info;
   }
