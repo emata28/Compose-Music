@@ -110,7 +110,7 @@ export function generateIndividuals(pSegments: SongSegment[]): Individual[] {
 
 export function compose(pMissing: SongSegment[][], pGen: SongSegment[][], pChannel: Channel[],pTable:infoTable[][]) {
   let gen = pGen;
-
+  let num :number= 0;
   let missingIndividuals: Individual[][] = [
     generateIndividuals(pMissing[0]),
     generateIndividuals(pMissing[1])
@@ -124,10 +124,20 @@ export function compose(pMissing: SongSegment[][], pGen: SongSegment[][], pChann
     console.log(missingIndividuals[0].length , missingIndividuals[1].length)
     const newGenIndividuals = cross(fitIndividuals);
     gen = individualsToSegments(newGenIndividuals, pChannel);
-
+    if(num>5){
     missingIndividuals = checkifFound(missingIndividuals, newGenIndividuals,pTable,gen);
+      num=0;
+    }
+  num++;
   } while (missingIndividuals[0].length !== 1 || missingIndividuals[1].length !== 1);
+  let tempSegment ;
+ /* for (let channel = 0; channel < pMissing.length; channel += 1) {
+    for (let i = 0; i < pMissing[channel].length; i += 1) {
+      if(pMissing[channel][i]==pTable[channel][0].Segments[0][0]){
 
-
+      }
+      tempSegment=pTable[channel][]
+    }
+  }*/
 
 }
