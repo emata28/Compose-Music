@@ -2,6 +2,7 @@ let hash = require('string-hash');
 
 export class DumbMap {
   private readonly list: any[];
+
   constructor() {
     this.list = [];
   }

@@ -1,14 +1,15 @@
-export function getSector(pNum1: number,pNum2: number): string {
+export function getSector(pNum1: number, pNum2: number): string {
 
-  if(-0.01<Math.abs(pNum1-pNum2)&&Math.abs(pNum1-pNum2)<0.01){
-  return "P";
-  }else if(pNum1>pNum2){
-  return "B";
-}else {
-  return "S";
+  if (-0.01 < Math.abs(pNum1 - pNum2) && Math.abs(pNum1 - pNum2) < 0.01) {
+    return "P";
+  } else if (pNum1 > pNum2) {
+    return "B";
+  } else {
+    return "S";
 
   }
 }
+
 export function getForm(pSector: string): string {
   let temp: string = '';
   let cont = 0;

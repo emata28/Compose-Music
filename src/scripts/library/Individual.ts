@@ -1,6 +1,7 @@
 export class Individual {
-  private readonly bitsValues: number[];
+  private bitsValues: number[];
   private fitness: number[];
+
   constructor(pValues: number[]) {
     this.bitsValues = pValues;
     this.fitness = [];
@@ -8,6 +9,10 @@ export class Individual {
 
   public getBitsValues(): number[] {
     return this.bitsValues;
+  }
+
+  public setBitsValues(pBitsValues: number[]) {
+    this.bitsValues = pBitsValues;
   }
 
   public getFitness() {
