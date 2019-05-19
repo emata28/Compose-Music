@@ -15,21 +15,24 @@ export function analizeSong(pAudioData: any, pSectors: Channel[]) {
   }
 
 }
+export function placeMultipleSegments(pTable:infoTable[],pSegment: SongSegment) {
+  for(let letter = 0; letter<pTable.length;letter++){
+  pTable[letter].placeSegment(pSegment,pSegment.getPorcentages()[letter]);
+  pTable[letter].calcData();
+  }
+}
+export function analizeSegments(pSegments: SongSegment[][], pTable: infoTable[][]): infoTable[][] {
 
-export function analizeSegments(pSegments: SongSegment[]): infoTable[] {
-  const tableS = new infoTable();
-  const tableB = new infoTable();
-  const tableP = new infoTable();
-  const result: infoTable[] = [tableS, tableB, tableP];
-  for (let segmentIndex = 0; segmentIndex < pSegments.length; segmentIndex++) {
+  for (let channel = 0; channel < pTable.length; channel += 1) {
+    for (let segmentIndex = 0; segmentIndex < pSegments[channel].length; segmentIndex++) {
+      for (let letterIndex = 0; letterIndex < LetterOrder.length; letterIndex++) {
+        pTable[channel][letterIndex].placeSegment(pSegments[channel][segmentIndex], Math.round(pSegments[channel][segmentIndex].getPorcentages()[letterIndex]));
+      }
+    }
     for (let letterIndex = 0; letterIndex < LetterOrder.length; letterIndex++) {
-      result[letterIndex].placeSegment(pSegments[segmentIndex], Math.round(pSegments[segmentIndex].getPorcentages()[letterIndex]));
+      pTable[channel][letterIndex].calcData();
     }
   }
-  for (let letterIndex = 0; letterIndex < LetterOrder.length; letterIndex++) {
-    result[letterIndex].calcData();
-  }
 
-
-  return result;
+  return pTable;
 }
