@@ -14,6 +14,13 @@ export class Individual {
     return this.fitness;
   }
 
+  public getAvgFitness(): number {
+    let avg = 0;
+    this.fitness.forEach(fit => avg += fit);
+    avg /= this.fitness.length;
+    return avg;
+  }
+
   public setFitness(pFitness: number[]) {
     this.fitness = pFitness;
   }
