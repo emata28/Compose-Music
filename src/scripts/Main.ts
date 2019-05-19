@@ -31,9 +31,9 @@ missingSegmentsS2[1] = getGoal(sectorsS2[1]);
 firstGen[0] = getSegments(sectorsS1[0]);
 firstGen[1] = getSegments(sectorsS1[1]);
 
-const infoTablesIndividual: infoTable[][] = [];
+let infoTablesIndividual: infoTable[][] = [[new infoTable(),new infoTable(),new infoTable()],[new infoTable(),new infoTable(),new infoTable()]]
 
-infoTablesIndividual.push(analizeSegments(firstGen[0]));
-infoTablesIndividual.push(analizeSegments(firstGen[1]));
+
+//infoTablesIndividual = (analizeSegments(firstGen,infoTablesIndividual));
 console.log(firstGen[0][0])
-compose(missingSegmentsS2, firstGen, sectorsS1);
+compose(missingSegmentsS2, firstGen, sectorsS1,infoTablesIndividual);

@@ -23,6 +23,9 @@ export class infoTable {
     this._total++;
   }
 
+
+
+
   get Segments(): SongSegment[][] {
     return this._Segments;
   }
@@ -58,6 +61,7 @@ export class infoTable {
   private calcRanges() {
     let total: number = 0;
     for (let i = 0; i < this._Porcentages.length; i++) {
+      this._Ranges[i]=[];
       this._Ranges[i].push(total);
       total += (Math.pow(2, BITS) * (this._Porcentages[i]));
       this._Ranges[i].push(total);

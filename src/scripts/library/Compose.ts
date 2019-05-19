@@ -5,6 +5,7 @@ import {bitsCross} from './Genetic';
 import {Individual} from './Individual';
 import {infoTable} from './infoTable';
 import {SongSegment} from './SongSegment';
+import {analizeSegments, placeMultipleSegments} from "./Utilities";
 
 export function getSegments(pSong: Channel): SongSegment[] {
   const segments: SongSegment[] = [];
@@ -79,13 +80,13 @@ function individualsToSegments(pSons: Individual[][], pChannel: Channel[]) {
   return segments;
 }
 
-function checkifFound(pMissing: Individual[][], pGeneration: Individual[][]): Individual[][] {
+function checkifFound(pMissing: Individual[][], pGeneration: Individual[][],pTable:infoTable[][],pSegment: SongSegment[][]): Individual[][] {
   for (let channel = 0; channel < pMissing.length; channel += 1) {
     for (let i = 0; i < pMissing[channel].length; i += 1) {
       for (let e = 0; e < pGeneration[channel].length; e += 1) {
 
         if (pGeneration[channel][e].getBitsValues().toString() === pMissing[channel][i].getBitsValues().toString()) {
-
+          placeMultipleSegments(pTable[channel],pSegment[channel][i]);
           pMissing[channel].splice(i, 1);
         }
       }
@@ -107,9 +108,9 @@ export function generateIndividuals(pSegments: SongSegment[]): Individual[] {
   return missing;
 }
 
-export function compose(pMissing: SongSegment[][], pGen: SongSegment[][], pChannel: Channel[]) {
+export function compose(pMissing: SongSegment[][], pGen: SongSegment[][], pChannel: Channel[],pTable:infoTable[][]) {
   let gen = pGen;
-
+  let num :number= 0;
   let missingIndividuals: Individual[][] = [
     generateIndividuals(pMissing[0]),
     generateIndividuals(pMissing[1])
@@ -121,9 +122,22 @@ export function compose(pMissing: SongSegment[][], pGen: SongSegment[][], pChann
     ];
     const fitIndividuals = getFit(genIndividuals, missingIndividuals);
     console.log(missingIndividuals[0].length , missingIndividuals[1].length)
-    const SanCarlos = cross(fitIndividuals);
-    gen = individualsToSegments(SanCarlos, pChannel);
-
-    missingIndividuals = checkifFound(missingIndividuals, SanCarlos);
+    const newGenIndividuals = cross(fitIndividuals);
+    gen = individualsToSegments(newGenIndividuals, pChannel);
+    if(num>5){
+    missingIndividuals = checkifFound(missingIndividuals, newGenIndividuals,pTable,gen);
+      num=0;
+    }
+  num++;
   } while (missingIndividuals[0].length !== 1 || missingIndividuals[1].length !== 1);
+  let tempSegment ;
+ /* for (let channel = 0; channel < pMissing.length; channel += 1) {
+    for (let i = 0; i < pMissing[channel].length; i += 1) {
+      if(pMissing[channel][i]==pTable[channel][0].Segments[0][0]){
+
+      }
+      tempSegment=pTable[channel][]
+    }
+  }*/
+
 }
