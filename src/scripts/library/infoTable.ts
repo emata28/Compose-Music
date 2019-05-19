@@ -23,7 +23,16 @@ export class infoTable {
     this._total++;
   }
 
+  public getFromPorcentage(pPorcentage: number[]){
+    let slot =Math.floor(pPorcentage[0] / 10);
+    for(let searching= 0;searching<this.Segments[slot].length;searching+=1) {
+      if (this.Segments[slot][searching].getPorcentages()[1] == pPorcentage[1] && this.Segments[slot][searching].getPorcentages()[1] == pPorcentage[2]) {
+        return this.Segments[slot][searching];
 
+      }
+    }
+    return this.Segments[slot][0];
+  }
 
 
   get Segments(): SongSegment[][] {
