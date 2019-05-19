@@ -20,6 +20,7 @@ const  Segments:SongSegment[][] = [[],[]];
 const objetive:Individual[][] =[[],[]];
 
 
+
 analizeSong(audioDataS1, sectorsS1);
 analizeSong(audioDataS2, sectorsS2);
 
