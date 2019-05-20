@@ -18,6 +18,6 @@ export function createFile(pChannel1: Float32Array, pChannel2: Float32Array, pNa
     ,
   };
   WavEncoder.encode(newAudio).then((buffer: any) => {
-    fs.writeFileSync(pName, buffer);
+    fs.writeFileSync(pName, Buffer.from(buffer));
   });
 }

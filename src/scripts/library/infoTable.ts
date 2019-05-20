@@ -19,7 +19,10 @@ export class infoTable {
   }
 
   public placeSegment(pSegment: SongSegment, pPorcentage: number) {
-    this._Segments[Math.floor(pPorcentage / 10)].push(pSegment);
+    let percentage = pPorcentage;
+    if (pPorcentage === 100)
+      percentage -= 1;
+    this._Segments[Math.floor(percentage / 10)].push(pSegment);
     this._total++;
   }
 

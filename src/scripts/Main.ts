@@ -37,4 +37,4 @@ let infoTablesIndividual: infoTable[][] = [[new infoTable(),new infoTable(),new 
 //infoTablesIndividual = (analizeSegments(firstGen,infoTablesIndividual));
 //console.log(firstGen[0][0])
 const song = compose(missingSegmentsS2, firstGen, sectorsS1,infoTablesIndividual);
-createWav(song, audioDataS1, sectorsS2.length * S2_MULTIPLIER)
+createWav(song, audioDataS1, sectorsS2[0].getInfo().length * LATTER_RATE * S2_MULTIPLIER)
