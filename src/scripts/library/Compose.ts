@@ -1,5 +1,12 @@
 import { Channel } from './Channel';
-import { AMOUNT_OF_SONGS, BITS, LATTER_RATE, LetterOrder, SEGMENT_SIZE } from './consts';
+import {
+  AMOUNT_OF_SONGS,
+  BITS,
+  LATTER_RATE,
+  LetterOrder,
+  S2_MULTIPLIER,
+  SEGMENT_SIZE
+} from './consts';
 import { fitness, getFit } from './Fitness';
 import { bitsCross } from './Genetic';
 import { Individual } from './Individual';
@@ -151,9 +158,11 @@ export function createWav(pSong: SongSegment[][], pAudioData: any, pLength: numb
       const letters = segment.getLetters();
       for (const letter of letters) {
         const indexEnd = letter.index * LATTER_RATE + LATTER_RATE;
-        for (let index = letter.index * LATTER_RATE; index < indexEnd; index += 1) {
-          newAudioData[channel][indices[channel]] = pAudioData.channelData[channel][index];
-          indices[channel] += 1;
+        for (let i = 0; i < S2_MULTIPLIER; i += 1) {
+          for (let index = letter.index * LATTER_RATE; index < indexEnd; index += 1) {
+            newAudioData[channel][indices[channel]] = pAudioData.channelData[channel][index];
+            indices[channel] += 1;
+          }
         }
       }
     }
