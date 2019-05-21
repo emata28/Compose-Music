@@ -20,9 +20,10 @@ export function getSegments(pSong: Channel): SongSegment[] {
 
   for (let i = 0; i < pSong.getInfo().length; i += SEGMENT_SIZE) {
     const segmentData: any[] = [];
+    const rand = Math.round(Math.random() * (pSong.getAll().length - 1));
+
     for (let e = 0; e < SEGMENT_SIZE; e += 1) {
-      const rand = Math.round(Math.random() * (pSong.getAll().length - 1));
-      segmentData.push(pSong.getAll()[rand]);
+      segmentData.push(pSong.getAll()[rand+e]);
     }
     const segment: SongSegment = new SongSegment(segmentData);
     segment.analizeSegment();
