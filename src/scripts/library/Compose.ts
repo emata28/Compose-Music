@@ -1,16 +1,15 @@
 import { Channel } from './Channel';
 import {
-  AMOUNT_OF_SONGS,
   BITS,
   LATTER_RATE,
-  LetterOrder,
+  LETTER_ORDER,
   S2_MULTIPLIER,
   SEGMENT_SIZE
 } from './consts';
-import { fitness, getFit } from './Fitness';
+import { getFit } from './Fitness';
 import { bitsCross } from './Genetic';
 import { Individual } from './Individual';
-import { infoTable } from './infoTable';
+import { InfoTable } from './InfoTable';
 import { SongSegment } from './SongSegment';
 import { analizeSegments, placeMultipleSegments } from './Utilities';
 import { createFile } from './wavManagment';
@@ -20,10 +19,10 @@ export function getSegments(pSong: Channel): SongSegment[] {
 
   for (let i = 0; i < pSong.getInfo().length; i += SEGMENT_SIZE) {
     const segmentData: any[] = [];
-    const rand = Math.round(Math.random() * (pSong.getAll().length - 1));
+    const rand = Math.round(Math.random() * (pSong.getAll().length - SEGMENT_SIZE));
 
     for (let e = 0; e < SEGMENT_SIZE; e += 1) {
-      segmentData.push(pSong.getAll()[rand+e]);
+      segmentData.push(pSong.getAll()[rand + e]);
     }
     const segment: SongSegment = new SongSegment(segmentData);
     segment.analizeSegment();
@@ -70,17 +69,17 @@ function individualsToSegments(pSons: Individual[][], pChannel: Channel[]) {
   for (let channel = 0; channel < segments.length; channel += 1) {
     for (const son of pSons[channel]) {
       const bits = son.getBitsValues();
-      const aasdasda = [];
+      const tempLetters = [];
       for (let bit = 0; bit < bits.length; bit += 1) {
         let amount = bits[bit] / Math.pow(2, BITS) * SEGMENT_SIZE;
         while (amount > 0) {
-          const letters = pChannel[channel].getLetter(LetterOrder[bit]);
+          const letters = pChannel[channel].getLetter(LETTER_ORDER[bit]);
           const newLetter = letters[Math.round((letters.length - 1) * Math.random())];
-          aasdasda.push(newLetter);
+          tempLetters.push(newLetter);
           amount -= 1;
         }
       }
-      const segment = new SongSegment(aasdasda);
+      const segment = new SongSegment(tempLetters);
       segment.analizeSegment();
       segments[channel].push(segment);
     }
@@ -88,12 +87,12 @@ function individualsToSegments(pSons: Individual[][], pChannel: Channel[]) {
   return segments;
 }
 
-function checkifFound(pMissing: Individual[][], pGeneration: Individual[][], pTable: infoTable[][], pSegment: SongSegment[][]): Individual[][] {
+function checkIfFound(pMissing: Individual[][], pGeneration: Individual[][],
+                      pTable: InfoTable[][], pSegment: SongSegment[][]): Individual[][] {
   for (let channel = 0; channel < pMissing.length; channel += 1) {
     for (let i = 0; i < pMissing[channel].length; i += 1) {
-      for (let e = 0; e < pGeneration[channel].length; e += 1) {
-
-        if (pGeneration[channel][e].getBitsValues().toString() === pMissing[channel][i].getBitsValues().toString()) {
+      for (const point of pGeneration[channel]) {
+        if (point.getBitsValues().toString() === pMissing[channel][i].getBitsValues().toString()) {
           placeMultipleSegments(pTable[channel], pSegment[channel][i]);
           pMissing[channel].splice(i, 1);
         }
@@ -107,7 +106,7 @@ export function generateIndividuals(pSegments: SongSegment[]): Individual[] {
   const missing: Individual[] = [];
   for (const segment of pSegments) {
     const bits: number[] = [];
-    const percentages = segment.getPorcentages();
+    const percentages = segment.getPercentages();
     for (let percentage = 0; percentage < percentages.length; percentage += 1) {
       bits[percentage] = Math.round(percentages[percentage] / 100 * Math.pow(2, BITS));
     }
@@ -116,7 +115,8 @@ export function generateIndividuals(pSegments: SongSegment[]): Individual[] {
   return missing;
 }
 
-export function compose(pMissing: SongSegment[][], pGen: SongSegment[][], pChannel: Channel[], pTable: infoTable[][]) {
+export function compose(pMissing: SongSegment[][], pGen: SongSegment[][],
+                        pChannel: Channel[], pTable: InfoTable[][]) {
   let gen = pGen;
   let num: number = 0;
   let missingIndividuals: Individual[][] = [
@@ -132,26 +132,26 @@ export function compose(pMissing: SongSegment[][], pGen: SongSegment[][], pChann
     const newGenIndividuals = cross(fitIndividuals);
     gen = individualsToSegments(newGenIndividuals, pChannel);
     if (num > 5) {
-      missingIndividuals = checkifFound(missingIndividuals, newGenIndividuals, pTable, gen);
+      missingIndividuals = checkIfFound(missingIndividuals, newGenIndividuals, pTable, gen);
       num = 0;
       analizeSegments(gen, pTable);
     }
-    num++;
+    num += 1;
     console.log(missingIndividuals[0].length, missingIndividuals[1].length);
   } while (missingIndividuals[0].length !== 1 || missingIndividuals[1].length !== 1);
-  const Song: SongSegment[][] = [[], []];
+  const song: SongSegment[][] = [[], []];
 
   for (let channel = 0; channel < pMissing.length; channel += 1) {
-    for (let i = 0; i < pMissing[channel].length; i += 1) {
-      Song[channel].push(pTable[channel][0]
-                            .getFromPorcentage(pMissing[channel][i].getPorcentages()));
+    for (const missing of pMissing[channel]) {
+      song[channel].push(pTable[channel][0]
+                            .getFromPercentage(missing.getPercentages()));
     }
   }
-  return Song;
+  return song;
 }
 
 export function createWav(pSong: SongSegment[][], pAudioData: any, pLength: number) {
-  console.log("Writing File");
+  console.log('Writing File');
   const newAudioData: Float32Array[] = [new Float32Array(pLength), new Float32Array(pLength)];
   const indices = [0, 0];
   for (let channel = 0; channel < pSong.length; channel += 1) {

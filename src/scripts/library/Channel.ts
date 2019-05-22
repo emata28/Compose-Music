@@ -1,4 +1,4 @@
-import {DumbMap} from './dumbMap';
+import { DumbMap } from './dumbMap';
 
 export class Channel {
   private info: string;

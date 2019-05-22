@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^6.7.0-rc.1",
+    "@types/string-hash": "^1.1.1",
     "fft": "0.2.1",
     "fourier-transform": "1.1.2",
     "jsmidgen": "0.1.5",
