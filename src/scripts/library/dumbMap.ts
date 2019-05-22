@@ -1,16 +1,17 @@
-let hash = require('string-hash');
+import stringHash from 'string-hash';
 
 export class DumbMap {
-  private list: any[];
+  private readonly list: any[];
+
   constructor() {
-    this.list = []
+    this.list = [];
   }
 
   public get(x: any) {
-    return this.list[x]
+    return this.list[stringHash(x)];
   }
 
   public set(x: any, y: any) {
-    this.list[x] = y
+    this.list[stringHash(x)] = y;
   }
 }

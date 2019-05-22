@@ -1,53 +1,50 @@
-import {BITS} from "./consts";
+import { LETTER_ORDER } from './consts';
 
 export class SongSegment {
-  private Segment: string;
-  private letters: string [][] = [];
-  private CountFound: number[] = [0, 0, 0];
-  private LetterFound: string[] = ['S', 'B', 'P'];
-  private Letters: number[][] = [[], [], []];
-  private Start :number;
-  private End:number;
-  constructor(pSegment: string, pStart: number, pEnd: number) {
-    this.Segment = pSegment;
-    this.Start = pStart;
-    this.End = pEnd;
+  private segment: any[];
+  private countFound: number[] = [0, 0, 0];
+  private percentages: number[] = [0, 0, 0];
+  private fitness: number[] = [0, 0, 0];
 
-
+  constructor(pSegment: any[]) {
+    this.segment = pSegment;
   }
 
-  private analizeSegment() {
-    for (let i = 0; i < this.Segment.length; i++) {
-      const foundIndex = this.LetterFound.indexOf(this.Segment[i]);
-      this.CountFound[foundIndex]++;
-      this.Letters[foundIndex].push(i);
-      for (let i = 0; i < this.CountFound.length; i++) {
-        this.CountFound[i] = (this.CountFound[i]) * 100 / this.Segment.length;
-        const newRange = Math.round(this.CountFound[i] / 100 * Math.pow(2, BITS));
+  public analizeSegment() {
+    for (const segment of this.segment) {
+      const foundIndex = LETTER_ORDER.indexOf(segment.letter);
+      this.countFound[foundIndex] += 1;
 
-      }
-
+    }
+    for (let i = 0; i < this.countFound.length; i += 1) {
+      this.percentages[i] = (this.countFound[i]) * 100 / this.segment.length;
     }
   }
 
-  public getSegment(): string {
-    return this.Segment;
-  }
-
-  public getletters(): string[][] {
-    return this.letters;
+  public getPercentages(): number[] {
+    return this.percentages;
   }
 
   public getCountFound(): number[] {
-    return this.CountFound;
+    return this.countFound;
   }
 
-  public getLetterFound(): string[] {
-    return this.LetterFound;
+  public getFitness(): number[] {
+    return this.fitness;
   }
 
-  public getLetters(): number[][] {
-    return this.Letters;
+  public getAvgFitness() {
+    let avg = 0;
+    this.fitness.forEach(fit => avg += fit);
+    avg /= this.fitness.length;
+    return avg;
+  }
+
+  public setFitness(pFitness: number[]) {
+    this.fitness = pFitness;
+  }
+
+  public getLetters() {
+    return this.segment;
   }
 }
-

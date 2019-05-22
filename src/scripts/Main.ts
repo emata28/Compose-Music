@@ -1,27 +1,33 @@
-import { AMOUNT_OF_SONGS, BIT_RATE, BITS,
-  LATTER_RATE, PATTERN_SIZE, S2_MULTIPLIER } from './library/consts';
-import { Pattern } from './library/Patterns';
-import { getForm, getSector } from './library/sector';
-import { Song } from './library/song';
+import { Channel } from './library/Channel';
+import { compose, createWav, getGoal, getSegments } from './library/Compose';
+import {
+  LATTER_RATE, S2_MULTIPLIER
+} from './library/consts';
+import { Individual } from './library/Individual';
+import { InfoTable } from './library/InfoTable';
+import { SongSegment } from './library/SongSegment';
+import { analizeSong } from './library/Utilities';
 import { readAudiodata } from './library/wavManagment';
-import {analizeSong} from "./library/Utilities";
-import {Compose} from "./library/Compose";
-const sectorsS1: string[] = ['', ''];
-const sectorsS2: string[] = ['', ''];
-const S1: string = process.argv[3];
-const S2: string = process.argv[4];
-const command: string = process.argv[2];
+
+const sectorsS1: Channel[] = [new Channel(), new Channel()];
+const sectorsS2: Channel[] = [new Channel(), new Channel()];
+const S1: string = process.argv[2];
+const S2: string = process.argv[3];
 const audioDataS1 = readAudiodata(S1);
 const audioDataS2 = readAudiodata(S2);
+const missingSegmentsS2: SongSegment[][] = [[], []];
+const firstGen: SongSegment[][] = [[], []];
 
-
-let comp = new Compose();
 analizeSong(audioDataS1, sectorsS1);
 analizeSong(audioDataS2, sectorsS2);
-let SongSize =  sectorsS2.length*10;
 
-const rangesS1 = [comp.ranges(sectorsS1[0]), comp.ranges(sectorsS1[1])];
-const rangesS2 = [comp.ranges(sectorsS2[0]), comp.ranges(sectorsS2[1])];
-let songs:Song[]=[];
-songs=comp.getInitialSongs(rangesS1,rangesS2,SongSize);
-console.log(sectorsS1);
+missingSegmentsS2[0] = getGoal(sectorsS2[0]);
+missingSegmentsS2[1] = getGoal(sectorsS2[1]);
+
+firstGen[0] = getSegments(sectorsS1[0]);
+firstGen[1] = getSegments(sectorsS1[1]);
+
+const infoTablesIndividual: InfoTable[][] = [[new InfoTable(), new InfoTable(), new InfoTable()],
+  [new InfoTable(), new InfoTable(), new InfoTable()]];
+const song = compose(missingSegmentsS2, firstGen, sectorsS1, infoTablesIndividual);
+createWav(song, audioDataS1, sectorsS2[0].getInfo().length * LATTER_RATE * S2_MULTIPLIER);
