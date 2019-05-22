@@ -1,81 +1,82 @@
-import {BITS} from './consts';
-import {SongSegment} from './SongSegment';
+import { BITS } from './consts';
+import { SongSegment } from './SongSegment';
 
-export class infoTable {
-  private _Segments: SongSegment[][] = [[], [], [], [], [], [], [], [], [], []];
-  private _Porcentages: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  private _Ranges: number[][] = [[], [], [], [], [], [], [], [], [], []];
+export class InfoTable {
+  private segments: SongSegment[][] = [[], [], [], [], [], [], [], [], [], []];
+  private percentages: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  private ranges: number[][] = [[], [], [], [], [], [], [], [], [], []];
 
-  private _total = 0;
+  private total: number;
 
   constructor() {
-
+    this.total = 0;
   }
 
   public calcData() {
-    this.calcPorcentages();
+    this.calcPercentages();
     this.calcRanges();
 
   }
 
   public placeSegment(pSegment: SongSegment, pPorcentage: number) {
     let percentage = pPorcentage;
-    if (pPorcentage === 100)
+    if (pPorcentage === 100) {
       percentage -= 1;
-    this._Segments[Math.floor(percentage / 10)].push(pSegment);
-    this._total++;
+    }
+    this.segments[Math.floor(percentage / 10)].push(pSegment);
+    this.total += 1;
   }
 
-  public getFromPorcentage(pPorcentage: number[]){
-    let slot =Math.floor(pPorcentage[0] / 10);
-    for(let searching= 0;searching<this.Segments[slot].length;searching+=1) {
-      if (Math.floor(this.Segments[slot][searching].getPorcentages()[1]) === Math.floor(pPorcentage[1]) && Math.floor(this.Segments[slot][searching].getPorcentages()[2]) === Math.floor(pPorcentage[2])) {
-        return this.Segments[slot][searching];
+  public getFromPercentage(pPercentage: number[]) {
+    const slot = Math.floor(pPercentage[0] / 10);
+    for (const segment of this.segments[slot]) {
+      if (Math.floor(segment.getPercentages()[1]) === Math.floor(pPercentage[1])
+        && Math.floor(segment.getPercentages()[2]) === Math.floor(pPercentage[2])) {
+        return segment;
       }
     }
-    return this.Segments[slot][0];
+    return this.segments[slot][0];
   }
 
-
-  get Segments(): SongSegment[][] {
-    return this._Segments;
+  public getSegments(): SongSegment[][] {
+    return this.segments;
   }
 
-  get Porcentages(): number[] {
-    return this._Porcentages;
+  public getPercentages(): number[] {
+    return this.percentages;
   }
 
-  get Ranges(): number[][] {
-    return this._Ranges;
+  public getRanges(): number[][] {
+    return this.ranges;
   }
 
-  get total(): number {
-    return this._total;
+  public getTotal(): number {
+    return this.total;
   }
 
   public getInfoRange(pBit: number): number {
-    for (let i = 0; i < this._Ranges.length; i += 1) {
-      if (this._Ranges[i][0] < pBit && this._Ranges[i][1] > pBit) {
+    for (let i = 0; i < this.ranges.length; i += 1) {
+      if (this.ranges[i][0] < pBit && this.ranges[i][1] > pBit) {
         return i;
       }
     }
     return -1;
   }
 
-  private calcPorcentages() {
-    for (let i = 0; i < this._Segments.length; i++) {
-      this._Porcentages[i] = Math.round(this._Segments[i].length / this._total);
+  private calcPercentages() {
+    for (let i = 0; i < this.segments.length; i += 1) {
+      this.percentages[i] = Math.round(this.segments[i].length / this.total);
 
     }
   }
 
   private calcRanges() {
     let total: number = 0;
-    for (let i = 0; i < this._Porcentages.length; i++) {
-      this._Ranges[i]=[];
-      this._Ranges[i].push(total);
-      total += (Math.pow(2, BITS) * (this._Porcentages[i]));
-      this._Ranges[i].push(total);
+    for (let i = 0; i < this.percentages.length; i += 1) {
+      this.ranges[i] = [];
+      this.ranges[i].push(total);
+      total += (Math.pow(2, BITS) * (this.percentages[i]));
+      this.ranges[i].push(total);
 
     }
   }

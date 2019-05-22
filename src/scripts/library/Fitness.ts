@@ -1,14 +1,12 @@
-import {Individual} from './Individual';
+import { Individual } from './Individual';
 
 export function fitness(pIndividual: Individual, pMissing: Individual[]) {
-  const fitness = [];
+  const fitnessPerIndividual = [];
   for (let letter = 0; letter < pIndividual.getBitsValues().length; letter += 1) {
-    let avg = 0;
-   // pMissing.forEach(element => avg += element.getBitsValues()[letter]);
-    avg /= pMissing.length;
-    fitness.push(Math.abs(pIndividual.getBitsValues()[letter] - pMissing[0].getBitsValues()[letter]));
+    fitnessPerIndividual.push(
+      Math.abs(pIndividual.getBitsValues()[letter] - pMissing[0].getBitsValues()[letter]));
   }
-  return fitness;
+  return fitnessPerIndividual;
 }
 
 export function getFit(pSongSegments: Individual[][], pMissing: Individual[][]): Individual[][] {

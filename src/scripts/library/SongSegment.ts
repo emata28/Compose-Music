@@ -1,50 +1,50 @@
-import {BITS, LetterOrder} from './consts';
+import { LETTER_ORDER } from './consts';
 
 export class SongSegment {
-  private Segment: any[];
-  private CountFound: number[] = [0, 0, 0];
-  private Porcentages: number[] = [0, 0, 0];
-  private Fitness: number[] = [0, 0, 0];
+  private segment: any[];
+  private countFound: number[] = [0, 0, 0];
+  private percentages: number[] = [0, 0, 0];
+  private fitness: number[] = [0, 0, 0];
 
   constructor(pSegment: any[]) {
-    this.Segment = pSegment;
+    this.segment = pSegment;
   }
 
   public analizeSegment() {
-    for (let i = 0; i < this.Segment.length; i += 1) {
-      const foundIndex = LetterOrder.indexOf(this.Segment[i].letter);
-      this.CountFound[foundIndex] += 1;
+    for (const segment of this.segment) {
+      const foundIndex = LETTER_ORDER.indexOf(segment.letter);
+      this.countFound[foundIndex] += 1;
 
     }
-    for (let i = 0; i < this.CountFound.length; i += 1) {
-      this.Porcentages[i] = (this.CountFound[i]) * 100 / this.Segment.length;
+    for (let i = 0; i < this.countFound.length; i += 1) {
+      this.percentages[i] = (this.countFound[i]) * 100 / this.segment.length;
     }
   }
 
-  public getPorcentages(): number[] {
-    return this.Porcentages;
+  public getPercentages(): number[] {
+    return this.percentages;
   }
 
   public getCountFound(): number[] {
-    return this.CountFound;
+    return this.countFound;
   }
 
   public getFitness(): number[] {
-    return this.Fitness;
+    return this.fitness;
   }
 
   public getAvgFitness() {
     let avg = 0;
-    this.Fitness.forEach(fit => avg += fit);
-    avg /= this.Fitness.length;
+    this.fitness.forEach(fit => avg += fit);
+    avg /= this.fitness.length;
     return avg;
   }
 
   public setFitness(pFitness: number[]) {
-    this.Fitness = pFitness;
+    this.fitness = pFitness;
   }
 
   public getLetters() {
-    return this.Segment;
+    return this.segment;
   }
 }

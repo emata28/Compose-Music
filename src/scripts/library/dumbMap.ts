@@ -1,4 +1,4 @@
-let hash = require('string-hash');
+import stringHash from 'string-hash';
 
 export class DumbMap {
   private readonly list: any[];
@@ -8,10 +8,10 @@ export class DumbMap {
   }
 
   public get(x: any) {
-    return this.list[hash(x)];
+    return this.list[stringHash(x)];
   }
 
   public set(x: any, y: any) {
-    this.list[hash(x)] = y;
+    this.list[stringHash(x)] = y;
   }
 }

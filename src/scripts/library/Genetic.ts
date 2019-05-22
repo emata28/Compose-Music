@@ -1,4 +1,4 @@
-import {BITS} from './consts';
+import { BITS } from './consts';
 
 export function bitsCross(pSubjectA: number, pSubjectB: number): number {
   let newNumber: number = 0;
